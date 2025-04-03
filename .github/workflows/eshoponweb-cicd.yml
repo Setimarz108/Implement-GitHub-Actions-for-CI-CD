@@ -9,7 +9,7 @@ env:
   LOCATION: germanywestcentral
   TEMPLATE-FILE: infra/webapp.bicep
   SUBSCRIPTION-ID: 135aee60-f0b2-444a-b29a-e16361ecb782
-  WEBAPP-NAME: eshoponweb-webapp-CI/CD
+  WEBAPP-NAME: eshoponweb-webapp-Lab
 
 
 jobs:
