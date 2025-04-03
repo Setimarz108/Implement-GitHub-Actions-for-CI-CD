@@ -64,12 +64,14 @@ jobs:
           az group show --name ${{ env.RESOURCE-GROUP }} || az group create --name ${{ env.RESOURCE-GROUP }} --location ${{ env.LOCATION }}
       - name: List existing WebApps
         run: az webapp list --query "[].{Name:name, ResourceGroup:resourceGroup}" --output table
+      - name: Debug Bicep Template Path
+        run: ls -R bicep-template
       - name: Deploy Infrastructure
         uses: azure/arm-deploy@v2
         with:
           subscriptionId: ${{ env.SUBSCRIPTION-ID }}
           resourceGroupName: ${{ env.RESOURCE-GROUP }}
-          template: ./bicep-template/$(basename ${{ env.TEMPLATE-FILE }})
+          template: ${{ github.workspace }}/bicep-template/webapp.bicep
           parameters: 'webAppName=${{ env.WEBAPP-NAME }} location=${{ env.LOCATION }}'
           deploymentMode: Incremental
           failOnStdErr: false
