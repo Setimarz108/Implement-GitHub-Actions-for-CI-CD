@@ -66,6 +66,15 @@ jobs:
         run: az webapp list --query "[].{Name:name, ResourceGroup:resourceGroup}" --output table
       - name: Debug Bicep Template Path
         run: ls -R bicep-template
+      - name: Delete existing WebApp if it exists
+        run: |
+          existing=$(az webapp show --name ${{ env.WEBAPP-NAME }} --resource-group ${{ env.RESOURCE-GROUP }} --query "name" --output tsv 2>/dev/null || echo "")
+          if [ -n "$existing" ]; then
+            echo "Deleting existing WebApp: $existing"
+            az webapp delete --name ${{ env.WEBAPP-NAME }} --resource-group ${{ env.RESOURCE-GROUP }}
+          else
+            echo "No existing WebApp found."
+          fi
       - name: Deploy Infrastructure
         uses: azure/arm-deploy@v2
         with:
